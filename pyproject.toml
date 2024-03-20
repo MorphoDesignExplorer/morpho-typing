@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "morpho-typing"
+version = "0.0.1"
+authors = [
+  { name="Krishna Sivakumar", email="krishnasivaprogrammer@gmail.com" },
+]
+description = "Provides type validation for arbitrarily defined, extendible JSON-style objects. Part of the Morpho Design Explorer Project."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+
