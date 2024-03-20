@@ -58,7 +58,7 @@ class ArcSchema(pydantic.BaseModel):
     """
     Represents a set of named variadic parameters belonging to a project.
 
-    Each field has a definite atomic type, along with it's unit and range of values.
+    Each field has a definite atomic type, along with its unit and range of values.
 
     This schema is initialized with a dictionary.
 
