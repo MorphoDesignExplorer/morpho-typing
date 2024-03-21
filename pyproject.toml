@@ -4,11 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "morpho-typing"
-version = "0.0.1"
+version = "1.0.0"
 authors = [
   { name="Krishna Sivakumar", email="krishnasivaprogrammer@gmail.com" },
 ]
-description = "Provides type validation for arbitrarily defined, extendible JSON-style objects. Part of the Morpho Design Explorer Project."
+description = "Provides type validation for arbitrarily defined, extendible JSON-style Schema definitions. Part of the Morpho Design Explorer Project."
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
@@ -18,4 +18,4 @@ classifiers = [
 ]
 
 [project.urls]
-
+Homepage = "https://github.com/MorphoDesignExplorer/morpho-typing/"

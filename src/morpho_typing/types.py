@@ -1,9 +1,28 @@
+"""
+This module provides a set of schemas common to the Morpho Design Explorer Server and GA-Search Client.
+
+There are two schemas available as of now:
+1. MorphoProjectSchema: defines and provides validation for the general structure of a project's schema
+2. MorphoAssetCollection: defines a set of assets / files that are associated with a schema.
+
+Project Usage:
+
+# to validate a project schema definition
+schema = MorphoProjectSchema(values=[...])
+
+# to validate a record against an existing project schema object
+schema.validate_record(record)
+
+# to validate an asset collection definition
+asset_schema = MorphoAssetCollection(assets=[...])
+"""
+
 from enum import StrEnum
 from typing_extensions import Annotated
 import pydantic
 
 
-class ArcType(StrEnum):
+class MorphoBaseType(StrEnum):
 
     """
     Represents the atomic data types
@@ -17,7 +36,7 @@ class ArcType(StrEnum):
     @property
     def native_type(self):
         """
-        A mapping from an ArcType to its corresponding native python type
+        A mapping from an MorphoBaseType to its corresponding native python type
         """
         python_types = {
             self.INT: int,
@@ -28,19 +47,19 @@ class ArcType(StrEnum):
         return python_types[self]
 
 
-class Field(pydantic.BaseModel):
+class MorphoProjectField(pydantic.BaseModel):
 
     """
-        Represents a field in an ArcSchema
+        Represents a field in an MorphoSchema
 
         :param `field_name`: name of the field
-        :param `field_type`: type of the field; ArcType
+        :param `field_type`: type of the field; MorphoBaseType
         :param `field_name`: name of the field
         :param `field_name`: name of the field
     """
 
     field_name: str
-    field_type: ArcType
+    field_type: MorphoBaseType
     field_unit: str
     field_range: list[int | float] = pydantic.Field(
         max_length=2, min_length=2)
@@ -54,7 +73,7 @@ class Field(pydantic.BaseModel):
         return range
 
 
-class ArcSchema(pydantic.BaseModel):
+class MorphoProjectSchema(pydantic.BaseModel):
     """
     Represents a set of named variadic parameters belonging to a project.
 
@@ -62,22 +81,24 @@ class ArcSchema(pydantic.BaseModel):
 
     This schema is initialized with a dictionary.
 
-    Example: {
-        "STEP": {
-            "UNIT": "",
-            "TYPE": "INT",
-            "RANGE": (0, 10)
+    Example: schema = MorphoSchma(values=[
+        {
+            "field_name": "step",
+            "field_unit": "",
+            "field_type": "INT",
+            "field_range": (0, 10)
         },
-        "HEIGHT": {
-            "UNIT": "m",
-            "TYPE": "DOUBLE",
-            "RANGE": (0, 100)
+        {
+            "field_name": "height",
+            "field_unit": "m",
+            "field_type": "DOUBLE",
+            "field_range": (0, 100)
         }
-    }
+    ])
     """
 
     # A mapping of existing fields in the schema to their types
-    fields: list[Field]
+    fields: list[MorphoProjectField]
 
     @pydantic.computed_field
     def parameter_models(self) -> list[pydantic.BaseModel]:
@@ -99,7 +120,7 @@ class ArcSchema(pydantic.BaseModel):
 
     def validate_record(self, record: list[int | str | float]) -> tuple[bool, list[str]]:
         """
-            Validates a list of parameters against an ArcSchema
+            Validates a list of parameters against an MorphoSchema
 
             :param `record`: list of parameter values
             :returns: `(is_valid, list_of_errors)`
@@ -120,3 +141,62 @@ class ArcSchema(pydantic.BaseModel):
             return (False, errors)
         else:
             return (True, [])
+
+
+class MorphoAsset(pydantic.BaseModel):
+    """
+    Definition of an Asset within the schema of a project.
+    """
+    tag: str
+    description: str
+    extension: str
+    mime_type: str
+
+
+class MorphoAssetCollection(pydantic.BaseModel):
+    """
+    Represents a collection of Asset definition
+    Example: MorphoAssetCollection(values=[
+        {
+            tag: "jpg1",
+            description: "A heat model of the architectural model",
+            extension: "jpg",
+            mimetype: "image/jpeg"
+        }
+    ])
+    """
+    assets: list[MorphoAsset]
+
+
+if __name__ == "__main__":
+    # test run
+
+    project_schema = [
+        {
+            "field_name": "step",
+            "field_unit": "",
+            "field_type": "INT",
+            "field_range": (0, 10)
+        },
+        {
+            "field_name": "height",
+            "field_unit": "m",
+            "field_type": "DOUBLE",
+            "field_range": (0, 100)
+        }
+    ]
+
+    asset_schema = [
+        {
+            "tag": "jpg1",
+            "description": "heatmap of a building",
+            "extension": "jpg",
+            "mime_type": "image/jpeg"
+        }
+    ]
+
+    ps = MorphoProjectSchema(fields=project_schema)
+    a = MorphoAssetCollection(assets=asset_schema)
+
+    print(ps)
+    print(a)
