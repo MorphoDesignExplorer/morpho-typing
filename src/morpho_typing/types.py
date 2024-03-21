@@ -20,6 +20,7 @@ asset_schema = MorphoAssetCollection(assets=[...])
 from enum import StrEnum
 from typing_extensions import Annotated
 import pydantic
+from pydantic import ValidationError
 
 
 class MorphoBaseType(StrEnum):
@@ -135,7 +136,7 @@ class MorphoProjectSchema(pydantic.BaseModel):
         for item, parameter_model in zip(record, self.parameter_models):
             try:
                 parameter_model.validate({"value": item})
-            except pydantic.ValidationError as e:
+            except ValidationError as e:
                 errors.append((e.errors()[0]['msg'], parameter_model.__name__))
         if len(errors) > 0:
             return (False, errors)
