@@ -18,7 +18,7 @@ asset_schema = MorphoAssetCollection(assets=[...])
 """
 
 from enum import StrEnum
-from typing_extensions import Annotated
+from typing_extensions import Annotated, Literal
 import pydantic
 from pydantic import ValidationError
 
@@ -167,6 +167,12 @@ class MorphoAssetCollection(pydantic.BaseModel):
     ])
     """
     assets: list[MorphoAsset]
+
+
+class MorphoQueryFilter(pydantic.BaseModel):
+    field_name: str
+    comparator: Literal[">", "<", ">=", "<=", "==", "!="]
+    value: MorphoBaseType
 
 
 if __name__ == "__main__":

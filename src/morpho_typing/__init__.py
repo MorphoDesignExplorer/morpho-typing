@@ -1,1 +1,1 @@
-from morpho_typing.types import MorphoProjectSchema, MorphoBaseType, MorphoProjectField, MorphoAsset, MorphoAssetCollection, ValidationError
+from morpho_typing.types import MorphoProjectSchema, MorphoBaseType, MorphoProjectField, MorphoAsset, MorphoAssetCollection, MorphoQueryFilter, ValidationError
