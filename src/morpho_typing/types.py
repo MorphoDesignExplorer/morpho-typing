@@ -45,6 +45,7 @@ class MorphoProjectField(pydantic.BaseModel):
     field_unit: str
     field_range: list[int | float] = pydantic.Field(
         max_length=2, min_length=2)
+    field_step: int | float
 
     @pydantic.field_validator('field_range')
     @classmethod
@@ -69,12 +70,14 @@ class MorphoProjectSchema(pydantic.BaseModel):
             "field_unit": "",
             "field_type": "INT",
             "field_range": (0, 10)
+            "field_step": 1
         },
         {
             "field_name": "height",
             "field_unit": "m",
             "field_type": "DOUBLE",
             "field_range": (0, 100)
+            "field_step": 2.5
         }
     ])
     """
