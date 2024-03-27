@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "morpho-typing"
-version = "1.3.0"
+version = "1.4.0"
 authors = [
   { name="Krishna Sivakumar", email="krishnasivaprogrammer@gmail.com" },
 ]
@@ -15,6 +15,10 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+]
+
+install_requires=[
+    "pydantic==2.6.4"
 ]
 
 [project.urls]
