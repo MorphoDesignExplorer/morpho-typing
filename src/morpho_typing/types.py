@@ -1,5 +1,5 @@
 from enum import StrEnum
-from typing_extensions import Annotated, Literal
+from typing_extensions import Annotated, Literal, Optional
 import pydantic
 from pydantic import ValidationError
 
@@ -46,6 +46,13 @@ class MorphoProjectField(pydantic.BaseModel):
     field_range: list[int | float] = pydantic.Field(
         max_length=2, min_length=2)
     field_step: int | float
+    field_precision: Optional[int]
+
+    @pydantic.validator('field_precision')
+    def precision_should_be_int(cls, field_precision: int | None) -> int | None:
+        if field_precision is not None:
+            assert isinstance(field_precision, int)
+        return field_precision
 
     @pydantic.field_validator('field_range')
     @classmethod
